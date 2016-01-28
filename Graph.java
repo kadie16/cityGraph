@@ -75,9 +75,28 @@ public class Graph {
 		chicago.findConnectedCities(cities.values()); */
 	}
 
+	public void printCities() {
+		for (City c : cities.values()) {
+			System.out.println(c.name() + "," + c.state() + " "); 
+		}
+	}
+
+	public void printInterstates() {
+		for (Interstate i : interstates.values()) {
+			HashSet<City> connected = i.getCities(); 
+			System.out.print(i.id () + " : " ); 
+			for (City c : connected) {
+				System.out.print(" " + c.name() + ","); 
+			}
+			System.out.println(""); 
+		}
+	}
+
     public static void main(String[] args) {
     	Graph graph = new Graph(); 
     	graph.readFile(args[0]);
+    	graph.printCities(); 
+    	graph.printInterstates(); 
 
     }
 

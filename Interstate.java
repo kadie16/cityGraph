@@ -24,4 +24,8 @@ public class Interstate {
 		return clone; 
 	}
 
+	public HashSet<City> getCities() {
+		return connectedCities; 
+	}
+
 }
