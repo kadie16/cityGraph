@@ -1,30 +1,34 @@
 import java.io.File; 
 import java.util.*;
-import java.io.FileNotFoundException; 
 
+/* Vertices of Graph */
 public class City {
     	private int population; 
     	private String state; 
     	private String name; 
-    	private HashSet<Integer> interstates; 
-    	private HashSet<City> neighborCities = new HashSet<City>(); 
+    	private HashSet<Integer> interstates;  
+        private boolean traversed; 
     	
-    	public City(int inPopulation, String inCity, String inState, HashSet<Integer> inInterstates) {
-    		population = inPopulation; 
-    		state = inState; 
-    		interstates = inInterstates; 
-    		name = inCity; 
+    	public City(int population, String city, String state) {
+    		this.population = population; 
+    		this.state = state; 
+    		interstates = new HashSet<Integer>(); 
+    		this.name = city; 
     	}
 
     	public HashSet<Integer> getInterstates() {
     		return interstates; 
     	}
 
+        public void addInterstate(int i)  {
+            interstates.add(i); 
+        }
+
     	public String name() {
     		return name; 
     	}
 
-    	public int getPopulation() {
+    	public int population() {
     		return this.population; 
     	}
 
@@ -32,44 +36,22 @@ public class City {
     		this.population = newPopulation; 
     	}
 
-    	public String getState(){
+    	public String state(){
     		return this.state; 
     	}
 
-    	public void addNeighbor(City neighbor) {
-    		neighborCities.add(neighbor); 
-    	}
+        public void markTraversed() {
+            traversed = true; 
+        }
 
-    	public boolean areKnownNeighbors(City city) {
-            if (neighborCities.isEmpty()) {
-                return false; 
-            }
-    		return neighborCities.contains(city);
-    	}
+        public void undoTraversed() {
+            traversed = false; 
+        }
 
-    	public HashSet<City> findNeighborCities(Collection<City> allCities){
-    		Iterator<City> cityIter = allCities.iterator(); 
-    		while (cityIter.hasNext()) {
-    			checkIfNeighbors(cityIter.next()); 
-    		}	
-    		return this.neighborCities; 
-    	}
+        public boolean traversed() {
+            return traversed; 
+        }
 
-    	public boolean checkIfNeighbors(City city) {
-    		if (areKnownNeighbors(city)) {
-    			return true; 
-    		} else {
-    			Iterator<Integer> interstateIter = city.getInterstates().iterator();
-    			while (interstateIter.hasNext()){ 
-                    int currInterstate = interstateIter.next();
-    				if(this.interstates.contains(currInterstate)) {
-    					city.addNeighbor(this); 
-    					neighborCities.add(city); 
-                        System.out.println(this.name + " shares " + currInterstate + " with " + city.name);
-    					return true; 
-    				}
-    			}
-    		}
-    		return false; 	
-    	}
+
     }
+

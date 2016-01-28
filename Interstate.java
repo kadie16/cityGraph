@@ -2,7 +2,7 @@ import java.util.*;
 
 /* Edges of the graph */ 
 public class Interstate {
-	int number; 
+	private int number; 
 	HashSet<City> connectedCities; 
 
 	public Interstate(int i) {
@@ -10,12 +10,16 @@ public class Interstate {
 		connectedCities = new HashSet<City>(); 
 	}
 
-	public addCity(City c) {
-		connectedCities.add(City); 
+	public void addCity(City c) {
+		connectedCities.add(c); 
+	}
+
+	public int id() {
+		return number; 
 	}
 
 	public HashSet<City> getNeighbors(City current) {
-		HashSet<City> clone = connectedCities.clone(); 
+		HashSet<City> clone = (HashSet<City>) connectedCities.clone(); 
 		clone.remove(current); 
 		return clone; 
 	}

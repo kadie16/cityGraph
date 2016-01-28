@@ -4,9 +4,26 @@ import java.io.FileNotFoundException;
 
 public class Graph {
 
-	public static HashMap<String, City> cities = new HashMap<String, City>(); 
+	private HashMap<String, City> cities; 
+	private HashMap<Integer, Interstate> interstates; 
 
-	public static void readFile(String fileName) {
+	public Graph() {
+		cities = new HashMap<String, City>(); 
+		interstates = new HashMap<Integer, Interstate>(); 
+
+	}
+
+	public void addCity(City c) {
+		cities.put(c.name(), c); 
+	}
+
+	public void addInterstate(Interstate i) {
+		interstates.put(i.id(), i); 
+	}
+
+
+
+	public void readFile(String fileName) {
 		Scanner s; 
 		try {
 			s = new Scanner(new File(fileName));
@@ -18,39 +35,49 @@ public class Graph {
 		int population = 0; 
 		String cityName; 
 		String state; 
-		String[] interstates; 
+		String[] interstateArr; 
 		String line[]; 
-		while(s.hasNextLine()) {
-			HashSet<Integer> interstateSet = new HashSet<Integer>(); 
+		while(s.hasNextLine()) { 
 			line = s.nextLine().split("\\|"); 
 			population = Integer.parseInt(line[0]); 
 			cityName = line[1]; 
 			state = line[2]; 
-			interstates = line[3].replaceAll(" ", "").split("\\D+"); 
-			System.out.println(line[3]);
-			for (String str2 : interstates) {
-				if (!str2.isEmpty()) {
-					interstateSet.add(Integer.parseInt(str2));
+			City newCity = new City(population, cityName, state);
+			interstateArr = line[3].replaceAll(" ", "").split("\\D+"); 
+			for (String str : interstateArr) {
+				if (!str.isEmpty()) {
+					int id = Integer.parseInt(str); 
+					/* If the interstate already exists in the graph */ 
+					if (interstates.containsKey(id)) {
+						interstates.get(id).addCity(newCity); 
+						newCity.addInterstate(id);
+					} else {
+					/* If the interstate is new to the graph */
+						Interstate newInterstate = new Interstate(id); 
+						newInterstate.addCity(newCity); 
+						this.addInterstate(newInterstate); 
+						newCity.addInterstate(id); 
+					}
 				}
-			}
-			City newCity = new City(population, cityName, state, interstateSet);
-			cities.put(cityName, newCity); 
+			} 
+			/* Add the City to the Graph */ 
+			this.addCity(newCity); 
 		}
 	}
 
 	public static void printDegrees() {
-		City chicago = cities.get("Chicago"); 
+		/*City chicago = cities.get("Chicago"); 
 		HashSet<City> neighbors = chicago.findNeighborCities(cities.values()); 
 		Iterator<City> iter = neighbors.iterator(); 
 		while(iter.hasNext()) {
 			System.out.println(iter.next().name()); 
 		}
-		chicago.findConnectedCities(cities.values()); 
+		chicago.findConnectedCities(cities.values()); */
 	}
 
     public static void main(String[] args) {
-    	readFile(args[0]);
-    	printDegrees(); 
+    	Graph graph = new Graph(); 
+    	graph.readFile(args[0]);
 
     }
 
