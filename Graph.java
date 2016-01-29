@@ -96,7 +96,7 @@ public class Graph {
 	} */ 
 
 	/* Find degrees */ 
-	public void bfs(String startCity, int degree) {
+	public void dfs(String startCity, int degree) {
 		LinkedList<Interstate> queue = new LinkedList<Interstate>(); 
 		City start = cities.get(startCity); 
 		for (int i : start.getInterstates()) {
@@ -112,14 +112,39 @@ public class Graph {
 				if (!c.traversed()) {
 					System.out.println(c.name() + " " + degree); 
 					c.mark(); 
-					this.bfs(c.name(), degree + 1); 
+					this.dfs(c.name(), degree + 1); 
 				}
 			}
 			queue.removeFirst(); 
 		}
-		/* add unmarked interstates to queue */ 
-			/* print neighbor cities + degree */ 
-			/* add neighbor cities interstates to queue and ++degree */ 
+	}
+
+	public void bfs(String startCity) {
+		for (City c : cities.values()) {
+			c.distance = 9999; 
+			c.parent = null; 
+		}
+		City root = cities.get(startCity);
+		root.distance = 0; 
+		LinkedList<City> queue = new LinkedList<City>(); 
+		queue.push(root);
+		City current; 
+
+		while(!queue.isEmpty()) {
+			current = queue.removeFirst(); 
+			HashSet<City> neighbors = new HashSet<City>(); 
+			for(int i : current.getInterstates()) {
+				neighbors.addAll(interstates.get(i).getNeighbors(current)); 
+			}
+			for (City c : neighbors) {
+				if (c.distance > current.distance + 1) {
+					c.distance = current.distance + 1; 
+					System.out.println(c.name() + " " + c.distance); 
+					queue.push(c); 
+				}
+			}
+		}
+
 	}
 
 	public void printInterstates() {
@@ -138,7 +163,7 @@ public class Graph {
     	graph.readFile(args[0]);
     	graph.printCities(); 
     	graph.printInterstates(); 
-    	graph.bfs("Chicago", 1); 
+    	graph.bfs("Chicago"); 
 
     }
 

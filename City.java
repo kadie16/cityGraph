@@ -8,6 +8,8 @@ public class City {
     	private String name; 
     	private HashSet<Integer> interstates;  
         private boolean traversed; 
+        public int distance; 
+        public City parent; 
     	
     	public City(int population, String city, String state) {
     		this.population = population; 
