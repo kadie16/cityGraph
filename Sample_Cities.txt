@@ -19,3 +19,4 @@
 4|Oakland|California|I-80
 7|El Paso|Texas|I-10;I-25
 10|San Jose|California|I-5;I-80
+6|Disneyland|California|I-666

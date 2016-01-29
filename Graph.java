@@ -1,4 +1,4 @@
-import java.io.File; 
+import java.io.*; 
 import java.util.*;
 import java.io.FileNotFoundException; 
 
@@ -65,16 +65,6 @@ public class Graph {
 		}
 	}
 
-	public static void printDegrees() {
-		/*City chicago = cities.get("Chicago"); 
-		HashSet<City> neighbors = chicago.findNeighborCities(cities.values()); 
-		Iterator<City> iter = neighbors.iterator(); 
-		while(iter.hasNext()) {
-			System.out.println(iter.next().name()); 
-		}
-		chicago.findConnectedCities(cities.values()); */
-	}
-
 	public void printCities() {
 		for (City c : cities.values()) {
 			System.out.println(c.name() + "," + c.state() + " "); 
@@ -111,19 +101,30 @@ public class Graph {
 	public void printBFSResult() {
 		TreeMap<Integer, TreeSet<String>> distanceMap = new TreeMap<Integer, TreeSet<String>>();
 		for (City c : cities.values()) {
-			if (distanceMap.containsKey(c.distance)) {
-				distanceMap.get(c.distance).add(c.name());
-				distanceMap.put(c.distance, distanceMap.get(c.distance)); 
+			int distance = c.distance; 
+			if (distance == 999) {
+				distance = -1; 
+			}
+			if (distanceMap.containsKey(distance)) {
+				distanceMap.get(distance).add(c.name());
+				distanceMap.put(distance, distanceMap.get(distance)); 
 			} else {
 				TreeSet<String> newSet = new TreeSet<String>(); 
 				newSet.add(c.name()); 
-				distanceMap.put(c.distance, newSet);  
+				distanceMap.put(distance, newSet);  
 			}	
 		}
-		for (int i : distanceMap.descendingKeySet()) {
-			for (String city : distanceMap.get(i)) {
-				System.out.println(i + " " + city);
+		try {
+			File out = new File ("Degrees_From_Chicago.txt");
+			FileWriter fw = new FileWriter(out); 
+			for (int i : distanceMap.descendingKeySet()) {
+				for (String city : distanceMap.get(i)) {
+					fw.write(i + " " + city + ", " + cities.get(city).state() + "\n");
+				}
 			}
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace(); 
 		}
 	}
 
