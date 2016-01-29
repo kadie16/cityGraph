@@ -4,10 +4,12 @@ import java.util.*;
 public class Interstate {
 	private int number; 
 	HashSet<City> connectedCities; 
+	private boolean traversed; 
 
 	public Interstate(int i) {
 		number = i; 
 		connectedCities = new HashSet<City>(); 
+		traversed = false; 
 	}
 
 	public void addCity(City c) {
@@ -27,5 +29,17 @@ public class Interstate {
 	public HashSet<City> getCities() {
 		return connectedCities; 
 	}
+
+	public void mark() {
+    	traversed = true; 
+    }
+
+    public void unMark() {
+        traversed = false; 
+    }
+
+    public boolean traversed() {
+        return traversed; 
+    }
 
 }

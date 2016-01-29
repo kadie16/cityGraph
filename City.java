@@ -14,6 +14,7 @@ public class City {
     		this.state = state; 
     		interstates = new HashSet<Integer>(); 
     		this.name = city; 
+            traversed = false; 
     	}
 
     	public HashSet<Integer> getInterstates() {
@@ -40,11 +41,11 @@ public class City {
     		return this.state; 
     	}
 
-        public void markTraversed() {
+        public void mark() {
             traversed = true; 
         }
 
-        public void undoTraversed() {
+        public void unMark() {
             traversed = false; 
         }
 
