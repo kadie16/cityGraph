@@ -81,48 +81,10 @@ public class Graph {
 		}
 	}
 
-	/* Finds degree between c1 and c2 
-	public int bfsDegree(String startCity, String endCity) {
-		if (city1.equals(city2)) {
-			return 0; 
-		} 
-		/* check startCity's interstates */ 
-			/* add startCity's interstates to queue */ 
-			/* see if endCity is neighbor of each interstate */ 
-			/* if yes, return 1 */ 
-			/* if no, return 1 + bfsDegree(neighborCity, endCity) 
-		LinkedList<City> queue = new LinkedList<City>(); 
 
-	} */ 
-
-	/* Find degrees */ 
-	public void dfs(String startCity, int degree) {
-		LinkedList<Interstate> queue = new LinkedList<Interstate>(); 
-		City start = cities.get(startCity); 
-		for (int i : start.getInterstates()) {
-			Interstate current = interstates.get(i); 
-			if (!current.traversed()) {
-				queue.push(current); 
-			}
-		}
-		while (!queue.isEmpty()) {
-			Interstate current = queue.getFirst(); 
-			current.mark(); 
-			for (City c : current.getNeighbors(start)) {
-				if (!c.traversed()) {
-					System.out.println(c.name() + " " + degree); 
-					c.mark(); 
-					this.dfs(c.name(), degree + 1); 
-				}
-			}
-			queue.removeFirst(); 
-		}
-	}
-
-	public void bfs(String startCity) {
+	public void bfs(String startCity) { 
 		for (City c : cities.values()) {
-			c.distance = 9999; 
-			c.parent = null; 
+			c.distance = 999; 
 		}
 		City root = cities.get(startCity);
 		root.distance = 0; 
@@ -139,12 +101,30 @@ public class Graph {
 			for (City c : neighbors) {
 				if (c.distance > current.distance + 1) {
 					c.distance = current.distance + 1; 
-					System.out.println(c.name() + " " + c.distance); 
 					queue.push(c); 
 				}
 			}
 		}
+		this.printBFSResult(); 
+	}
 
+	public void printBFSResult() {
+		TreeMap<Integer, TreeSet<String>> distanceMap = new TreeMap<Integer, TreeSet<String>>();
+		for (City c : cities.values()) {
+			if (distanceMap.containsKey(c.distance)) {
+				distanceMap.get(c.distance).add(c.name());
+				distanceMap.put(c.distance, distanceMap.get(c.distance)); 
+			} else {
+				TreeSet<String> newSet = new TreeSet<String>(); 
+				newSet.add(c.name()); 
+				distanceMap.put(c.distance, newSet);  
+			}	
+		}
+		for (int i : distanceMap.descendingKeySet()) {
+			for (String city : distanceMap.get(i)) {
+				System.out.println(i + " " + city);
+			}
+		}
 	}
 
 	public void printInterstates() {
@@ -152,7 +132,7 @@ public class Graph {
 			HashSet<City> connected = i.getCities(); 
 			System.out.print(i.id () + " : " ); 
 			for (City c : connected) {
-				System.out.print(" " + c.name() + ","); 
+				System.out.print(" " + c.name()); 
 			}
 			System.out.println(""); 
 		}
@@ -161,8 +141,6 @@ public class Graph {
     public static void main(String[] args) {
     	Graph graph = new Graph(); 
     	graph.readFile(args[0]);
-    	graph.printCities(); 
-    	graph.printInterstates(); 
     	graph.bfs("Chicago"); 
 
     }

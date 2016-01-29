@@ -7,16 +7,14 @@ public class City {
     	private String state; 
     	private String name; 
     	private HashSet<Integer> interstates;  
-        private boolean traversed; 
         public int distance; 
-        public City parent; 
     	
     	public City(int population, String city, String state) {
     		this.population = population; 
     		this.state = state; 
     		interstates = new HashSet<Integer>(); 
     		this.name = city; 
-            traversed = false; 
+            distance = 0; 
     	}
 
     	public HashSet<Integer> getInterstates() {
@@ -42,18 +40,6 @@ public class City {
     	public String state(){
     		return this.state; 
     	}
-
-        public void mark() {
-            traversed = true; 
-        }
-
-        public void unMark() {
-            traversed = false; 
-        }
-
-        public boolean traversed() {
-            return traversed; 
-        }
 
 
     }
