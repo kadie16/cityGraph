@@ -1,7 +1,6 @@
-import java.io.File; 
-import java.util.*;
+import java.util.HashSet;
 
-/* Vertices of Graph */
+/* Cities represent Vertices of Graph */
 public class City {
     	private int population; 
     	private String state; 

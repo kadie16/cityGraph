@@ -1,6 +1,6 @@
-import java.util.*;
+import java.util.HashSet;
 
-/* Edges of the graph */ 
+/* Interstates represent Edges of the graph */ 
 public class Interstate {
 	private int number; 
 	HashSet<City> connectedCities; 

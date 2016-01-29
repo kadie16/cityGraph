@@ -1,6 +1,15 @@
-import java.io.*; 
-import java.util.*;
+import java.io.File; 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.FileNotFoundException; 
+import java.lang.IllegalArgumentException;
+import java.util.Scanner;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.HashSet;
+import java.util.TreeSet;
+import java.util.TreeMap; 
+
 
 public class Graph {
 
@@ -21,9 +30,7 @@ public class Graph {
 		interstates.put(i.id(), i); 
 	}
 
-
-
-	public void readFile(String fileName) {
+	public void initGraphFromFile(String fileName) {
 		Scanner s; 
 		try {
 			s = new Scanner(new File(fileName));
@@ -76,12 +83,14 @@ public class Graph {
 		for (City c : cities.values()) {
 			c.distance = 999; 
 		}
+		if (!cities.containsKey(startCity)) {
+			throw new IllegalArgumentException("Unkown City!");
+		}
 		City root = cities.get(startCity);
 		root.distance = 0; 
 		LinkedList<City> queue = new LinkedList<City>(); 
 		queue.push(root);
 		City current; 
-
 		while(!queue.isEmpty()) {
 			current = queue.removeFirst(); 
 			HashSet<City> neighbors = new HashSet<City>(); 
@@ -95,10 +104,10 @@ public class Graph {
 				}
 			}
 		}
-		this.printBFSResult(); 
 	}
 
-	public void printBFSResult() {
+	public TreeMap<Integer, TreeSet<String>> orderCitiesByDistanceFrom(String startCity) {
+		this.bfs(startCity); 
 		TreeMap<Integer, TreeSet<String>> distanceMap = new TreeMap<Integer, TreeSet<String>>();
 		for (City c : cities.values()) {
 			int distance = c.distance; 
@@ -114,11 +123,15 @@ public class Graph {
 				distanceMap.put(distance, newSet);  
 			}	
 		}
+		return distanceMap; 
+	}
+
+	public void saveOrderToFile(TreeMap<Integer, TreeSet<String>> order, String fileName) {	
 		try {
-			File out = new File ("Degrees_From_Chicago.txt");
+			File out = new File (fileName);
 			FileWriter fw = new FileWriter(out); 
-			for (int i : distanceMap.descendingKeySet()) {
-				for (String city : distanceMap.get(i)) {
+			for (int i : order.descendingKeySet()) {
+				for (String city : order.get(i)) {
 					fw.write(i + " " + city + ", " + cities.get(city).state() + "\n");
 				}
 			}
@@ -141,9 +154,8 @@ public class Graph {
 
     public static void main(String[] args) {
     	Graph graph = new Graph(); 
-    	graph.readFile(args[0]);
-    	graph.bfs("Chicago"); 
-
+    	graph.initGraphFromFile("Sample_Cities.txt");
+    	graph.saveOrderToFile(graph.orderCitiesByDistanceFrom("Chicago"), "Degrees_From_Chicago.txt");
     }
 
     

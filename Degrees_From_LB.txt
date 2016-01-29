@@ -1,0 +1,22 @@
+6 Arlington, Texas
+6 Atlanta, Georgia
+6 Nashville, Tennessee
+5 Dallas, Texas
+5 Oklahoma City, Oklahoma
+4 Kansas City, Kansas
+3 Columbus, Ohio
+2 Boston, Massachusetts
+2 Chicago, Illinois
+2 Cleveland, Ohio
+2 New York, New York
+2 Oakland, California
+2 Philadelphia, Pennsylvania
+1 Bakersfield, California
+1 El Paso, Texas
+1 Jacksonville, Florida
+1 Portland, Oregon
+1 San Jose, California
+1 Seattle, Washington
+1 Tucson, Arizona
+0 Long Beach, California
+-1 Disneyland, California
